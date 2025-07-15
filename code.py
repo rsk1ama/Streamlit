@@ -15,7 +15,7 @@ if  upload_file:
     df['TIMESTAMP'] = pd.to_datetime(df['TIMESTAMP'], errors='coerce', infer_datetime_format = True)
     df.dropna(subset = ['TIMESTAMP'], inplace=True) 
     df.set_index('TIMESTAMP', inplace=True)
-    df.replace(0,np.nan, inplace = True)
+    df.replace(65535,np.nan, inplace = True)
     st.subheader("เลือกช่วงเวลา")
     min_date = df.index.min().date()
     max_date = df.index.max().date()

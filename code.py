@@ -16,6 +16,7 @@ if  upload_file:
     df.dropna(subset = ['TIMESTAMP'], inplace=True) 
     df.set_index('TIMESTAMP', inplace=True)
     df.replace(65535,np.nan, inplace = True)
+    df.replace(65505,np.nan, inplace = True)
     st.subheader("เลือกช่วงเวลา")
     min_date = df.index.min().date()
     max_date = df.index.max().date()

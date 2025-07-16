@@ -1,34 +1,23 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import altair as alt
+import plotly.graph_objects as go
+
 
 st.set_page_config(page_title="Dashboard monitor anodizing", layout="wide")
+
+
 upload_file = st.file_uploader ("Upload file excel" , type=["xlsx"])
-if upload_file:
+if  upload_file:
     #read file excel        
     df = pd.read_excel(upload_file)
     df.columns = df.columns.str.strip()
-    df.replace([0,65505,65535],np.nan, inplace = True)
-
-
-    if "TIMESTAMP" in df.columns and not df["TIMESTAMP"].isnull().all():
-        df["TIMESTAMP"] = pd.to_datetime(df["TIMESTAMP"])
-
-        st.subheader("เลือกช่วงเวลา")
-        min_time = df["TIMESTAMP"].min().date()
-        max_time = df["TIMESTAMP"].max().date()
-
-        start_date, end_date = st.date_input("เลือกช่วงวันที่",value=[min_time , max_time] , min_value = min_time , max_value = max_time)
-    
-        start_dt = pd.to_datetime(start_date)
-        end_dt = pd.to_datetime(end_date) + pd.Timedelta(days=1)
-        df_filterd = df[(df["TIMESTAMP"] >= start_dt) & (df["TIMESTAMP"] < end_dt)]
-
-
-#===Detial sensor
-    sensor_thesholds = {
-        "Temperature 1" : {"warning": 70, "immediate": 90},
+    df["TIMESTAMP"] = pd.to_datetime(df["TIMESTAMP"], errors='coerce', infer_datetime_format = True)
+    df.replace([0.65505,65535],np.nan, inplace = True)
+       
+    sensor_thresholds = {
+        
+         "Temperature 1" : {"warning": 70, "immediate": 90},
         "Temperature 2" : {"warning": 70, "immediate": 90},
         "Temperature 3" : {"warning": 70, "immediate": 90},
         "Temperature 4" : {"warning": 70, "immediate": 90},
@@ -36,32 +25,73 @@ if upload_file:
         "Temperature 6" : {"warning": 70, "immediate": 90},
         "Temperature 7" : {"warning": 70, "immediate": 90},
         "Flowlate chemical" : {"warning": 130, "immediate": 100},
-        "Pr.Suction chemical" : {"warning": 270, "immediate": 250},
-        "Pr.Dischange chemical" : {"warning": 270, "immediate": 250},
+        "Pr.Suction chemical": {"warning": 250, "immediate": 200},
+        "Pr.Dischange chemical": {"warning": 250, "immediate": 200}
         }
+           
+    available_sensors = [s for s in sensor_thresholds if s in df.columns]
+    if not available_sensors:
+        st.error()
+    sensor = st.selectbox("เลือก sensor", available_sensors)
 
-    selected_sensors = st.multiselect("เลือก sensor ที่ต้องการแสดง:" , options=list(sensor_thesholds.keys()),
-    default=["Temperature 1","Temperature 2","Temperature 3",])
+    st.subheader("เลือกช่วงเวลา")
+    min_date = df["TIMESTAMP"].min().date()
+    max_date = df["TIMESTAMP"].max().date()
+    start_date, end_date = st.date_input("ช่วงวันที่" , [min_date , max_date] , min_value = min_date , max_value = max_date)
+    start_dt = pd.to_datetime(start_date)
+    end_dt = pd.to_datetime(end_date) + pd.Timedelta(days=1)
 
+    
+    if start_date > end_date:
+        st.error("ไม่พบช่วงเวลาข้อมูล")
+    else:
+        mask = (df["TIMESTAMP"].dt.date >= start_date) & (df["TIMESTAMP"].dt.date <= end_date)
+        sensor_data = df.loc[mask,["TIMESTAMP",sensor]].dropna()
 
-    #chart
-    for sensor in selected_sensors:
-        if sensor not in df.columns:
-            st.warning(f"ไม่พบข้อมูล:{sensor}")
-            continue
-        sensor_data = df_filterd[["TIMESTAMP",sensor]].dropna()
-        thresholds = sensor_thesholds[sensor]
+        if sensor_data.empty:
+            st.warning("no data for date")
+            st.stop()
+    warning = sensor_thresholds[sensor]["warning"]
+    immediate = sensor_thresholds[sensor]["immediate"]
+    print("Warning =", warning)    
+    print("Immediate =", immediate)
+    
+     #chart
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+            x = sensor_data["TIMESTAMP"],
+            y = sensor_data[sensor],
+            mode="lines",
+            name= "ค่าที่วัดได้",
+            line=dict(color="blue") ))
+    
 
-        ymin = min(sensor_data[sensor].min(), thresholds["warning"],thresholds["immediate"]) -10
-        ymax = max(sensor_data[sensor].max(), thresholds["warning"],thresholds["immediate"]) +10
-
-
-        line = alt.Chart(sensor_data).mark_line(color="steelblue").encode(x = "TIMESTAMP:T", y= alt.Y (f"{sensor}:Q" , title="sensor Valve", scale = alt.Scale(domain=[ymin,ymax])) ,tooltip=["TIMESTAMP",sensor])
-        warning_line = alt.Chart(pd.DataFrame({"y": [thresholds["warning"]]})).mark_rule(color="orange", strokeDash=[5,5]).encode(y="y")
-        immediate_line = alt.Chart(pd.DataFrame({"y": [thresholds["immediate"]]})).mark_rule(color="red", strokeDash=[3,3]).encode(y="y")
-        chart = (line + warning_line + immediate_line).properties(title = f"{thresholds} ({sensor})" , width = 800 , height = 500)
-
-        st.altair_chart(chart , use_container_width=True)
+    fig.add_trace(go.Scatter(
+            x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
+            y = [warning, warning],
+            mode="lines",
+            name= "Warning",
+            line=dict(color="orange",dash="dash") ))
+    
+    fig.add_trace(go.Scatter(
+            x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
+            y = [immediate, immediate],
+            mode="lines",
+            name= "Immediate",
+            line=dict(color="red",dash="dot") ))
+    
+    
+    fig.update_layout(
+            title = f"ค่าที่วัดได้จาก : {sensor}",
+            xaxis_title ="เวลา",
+            yaxis_title ="ค่า",
+            hovermode ="x unified",
+            legend_title ="ข้อมูล",
+            )
+    
+    st.plotly_chart(fig,use_container_width=True)
+    with st.expander("ดูข้อมูล"):
+        st.dataframe(sensor_data,use_container_width=True)
 
 
 

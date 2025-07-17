@@ -40,15 +40,15 @@ if not available_sensors:
     end_dt = pd.to_datetime(end_date) + pd.Timedelta(days=1)
 
     
-if start_date > end_date:
+    if start_date > end_date:
         st.error("ไม่พบช่วงเวลาข้อมูล")
-else:
-    mask = (df["TIMESTAMP"].dt.date >= start_date) & (df["TIMESTAMP"].dt.date <= end_date)
-    sensor_data = df.loc[mask,["TIMESTAMP",sensor]].dropna()
+    else:
+        mask = (df["TIMESTAMP"].dt.date >= start_date) & (df["TIMESTAMP"].dt.date <= end_date)
+        sensor_data = df.loc[mask,["TIMESTAMP",sensor]].dropna()
 
     if sensor_data.empty:
-            st.warning("no data for date")
-            st.stop()
+        st.warning("no data for date")
+        st.stop()
 warning = sensor_thresholds[sensor]["warning"]
 immediate = sensor_thresholds[sensor]["immediate"]
 print("Warning =", warning)    

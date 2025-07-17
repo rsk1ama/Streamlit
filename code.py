@@ -3,6 +3,32 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
+USER_CREDENTIALS = {
+       "admin":"TEF4",
+       "user": "TEF4"
+}
+def login():
+       st.title("Login Page")
+       username = st.text_input("Username")
+       password = st.text_input("Password", type="password")
+       if st.button("Login"):
+              if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+                st.session_state["logged_in"] = True
+                st.session_state["username"] = username
+                st.success(f"Login สำเร็จ: {username}")
+              else:
+                     st.error("Username หรือ password ไม่ถูกต้อง")
+        
+if "logged_in" not in st.session_state:
+       st.session_state["logged_in"] = False
+if not st.session_state["logged_in"]:
+       login()
+else:
+       st.success(f"ยินดีต้อนรับ {st.session_state['username']}")
+       if st.button("Logout"):
+              st.session_state['logged_in'] = False
+              st.experimental_rerun()
+
 
 st.set_page_config(page_title="Dashboard monitor anodizing", layout="wide")
        

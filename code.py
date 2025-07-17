@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="Dashboard monitor anodizing", layout="wide")
 
-xlsx_url = "https://bosch.sharepoint.com/:x:/r/sites/msteams_7593160/Shared%20Documents/General/Data_anodizing/HistoryData.xlsx?d=w7770602296f444eba7a2795139cced8a&csf=1&web=1&e=8CL89b"
+xlsx_url = "https://bosch.sharepoint.com/:x:/s/msteams_7593160/ESJgcHf0lutEp6J5UTnM7YoBZBy-yT2f3Gkaz0jqdMkigA?e=7zKRae"
         
 df = pd.read_excel(xlsx_url)
 df.columns = df.columns.str.strip()

@@ -16,6 +16,7 @@ def login():
                 st.session_state["logged_in"] = True
                 st.session_state["username"] = username
                 st.success(f"Login สำเร็จ: {username}")
+                st.experimental_rerun()
               else:
                      st.error("Username หรือ password ไม่ถูกต้อง")
         

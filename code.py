@@ -55,8 +55,8 @@ if not available_sensors:
     print("Immediate =", immediate)
     
     #chart
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
+fig = go.Figure()
+fig.add_trace(go.Scatter(
         x = sensor_data["TIMESTAMP"],
         y = sensor_data[sensor],
         mode="lines",
@@ -64,14 +64,14 @@ if not available_sensors:
         line=dict(color="blue") ))
     
 
-    fig.add_trace(go.Scatter(
+fig.add_trace(go.Scatter(
         x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
         y = [warning, warning],
         mode="lines",
         name= "Warning",
         line=dict(color="orange",dash="dash") ))
     
-    fig.add_trace(go.Scatter(
+fig.add_trace(go.Scatter(
         x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
         y = [immediate, immediate],
         mode="lines",
@@ -79,7 +79,7 @@ if not available_sensors:
         line=dict(color="red",dash="dot") ))
     
     
-    fig.update_layout(
+fig.update_layout(
         title = f"ค่าที่วัดได้จาก : {sensor}",
         xaxis_title ="เวลา",
         yaxis_title ="ค่า",

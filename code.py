@@ -24,10 +24,10 @@ if "logged_in" not in st.session_state:
 if not st.session_state["logged_in"]:
        login()
 else:
-   st.success(f"ยินดีต้อนรับ {st.session_state['username']}")
-   if st.button("Logout"):
-      st.session_state['logged_in'] = False
-      st.experimental_rerun()
+       st.success(f"ยินดีต้อนรับ {st.session_state['username']}")
+          if st.button("Logout"):
+             st.session_state['logged_in'] = False
+             st.experimental_rerun()
 
 
        st.set_page_config(page_title="Dashboard monitor anodizing", layout="wide")

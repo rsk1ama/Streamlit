@@ -8,10 +8,10 @@ st.set_page_config(page_title="Dashboard monitor anodizing", layout="wide")
 
 
     #read file excel        
-    df = pd.read_excel("HistoryData.xlsx")
-    df.columns = df.columns.str.strip()
-    df["TIMESTAMP"] = pd.to_datetime(df["TIMESTAMP"], errors='coerce', infer_datetime_format = True)
-    df.replace([0,65505,65535],np.nan, inplace = True)
+df = pd.read_excel("HistoryData.xlsx")
+df.columns = df.columns.str.strip()
+df["TIMESTAMP"] = pd.to_datetime(df["TIMESTAMP"], errors='coerce', infer_datetime_format = True)
+df.replace([0,65505,65535],np.nan, inplace = True)
        
     sensor_thresholds = {
         

@@ -49,14 +49,14 @@ if not available_sensors:
         if sensor_data.empty:
             st.warning("no data for date")
             st.stop()
-warning = sensor_thresholds[sensor]["warning"]
-immediate = sensor_thresholds[sensor]["immediate"]
-print("Warning =", warning)    
-print("Immediate =", immediate)
+    warning = sensor_thresholds[sensor]["warning"]
+    immediate = sensor_thresholds[sensor]["immediate"]
+    print("Warning =", warning)    
+    print("Immediate =", immediate)
     
     #chart
-fig = go.Figure()
-fig.add_trace(go.Scatter(
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
         x = sensor_data["TIMESTAMP"],
         y = sensor_data[sensor],
         mode="lines",
@@ -64,14 +64,14 @@ fig.add_trace(go.Scatter(
         line=dict(color="blue") ))
     
 
-fig.add_trace(go.Scatter(
+    fig.add_trace(go.Scatter(
         x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
         y = [warning, warning],
         mode="lines",
         name= "Warning",
         line=dict(color="orange",dash="dash") ))
     
-fig.add_trace(go.Scatter(
+    fig.add_trace(go.Scatter(
         x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
         y = [immediate, immediate],
         mode="lines",
@@ -79,7 +79,7 @@ fig.add_trace(go.Scatter(
         line=dict(color="red",dash="dot") ))
     
     
-fig.update_layout(
+    fig.update_layout(
         title = f"ค่าที่วัดได้จาก : {sensor}",
         xaxis_title ="เวลา",
         yaxis_title ="ค่า",
@@ -87,9 +87,9 @@ fig.update_layout(
         legend_title ="ข้อมูล",
         )
     
-st.plotly_chart(fig,use_container_width=True)
-with st.expander("ดูข้อมูล"):
-    st.dataframe(sensor_data,use_container_width=True)
+    st.plotly_chart(fig,use_container_width=True)
+    with st.expander("ดูข้อมูล"):
+        st.dataframe(sensor_data,use_container_width=True)
 
 
 

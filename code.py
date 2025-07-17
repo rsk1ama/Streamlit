@@ -57,35 +57,35 @@ if not available_sensors:
     #chart
 fig = go.Figure()
 fig.add_trace(go.Scatter(
-        x = sensor_data["TIMESTAMP"],
-        y = sensor_data[sensor],
-        mode="lines",
-        name= "ค่าที่วัดได้",
-        line=dict(color="blue") ))
+    x = sensor_data["TIMESTAMP"],
+    y = sensor_data[sensor],
+    mode="lines",
+    name= "ค่าที่วัดได้",
+    line=dict(color="blue") ))
     
 
 fig.add_trace(go.Scatter(
-        x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
-        y = [warning, warning],
-        mode="lines",
-        name= "Warning",
-        line=dict(color="orange",dash="dash") ))
+    x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
+    y = [warning, warning],
+    mode="lines",
+    name= "Warning",
+    line=dict(color="orange",dash="dash") ))
     
 fig.add_trace(go.Scatter(
-        x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
-        y = [immediate, immediate],
-        mode="lines",
-        name= "Immediate",
-        line=dict(color="red",dash="dot") ))
+    x = [sensor_data["TIMESTAMP"].min(),sensor_data["TIMESTAMP"].max()],
+    y = [immediate, immediate],
+    mode="lines",
+    name= "Immediate",
+    line=dict(color="red",dash="dot") ))
     
     
 fig.update_layout(
-        title = f"ค่าที่วัดได้จาก : {sensor}",
-        xaxis_title ="เวลา",
-        yaxis_title ="ค่า",
-        hovermode ="x unified",
-        legend_title ="ข้อมูล",
-        )
+    title = f"ค่าที่วัดได้จาก : {sensor}",
+    xaxis_title ="เวลา",
+    yaxis_title ="ค่า",
+    hovermode ="x unified",
+    legend_title ="ข้อมูล",
+    )
     
 st.plotly_chart(fig,use_container_width=True)
 with st.expander("ดูข้อมูล"):

@@ -15,17 +15,17 @@ df.replace([0,65505,65535],np.nan, inplace = True)
        
 sensor_thresholds = {
         
-         "Temperature 1" : {"warning": 70, "immediate": 90},
-        "Temperature 2" : {"warning": 70, "immediate": 90},
-        "Temperature 3" : {"warning": 70, "immediate": 90},
-        "Temperature 4" : {"warning": 70, "immediate": 90},
-        "Temperature 5" : {"warning": 70, "immediate": 90},
-        "Temperature 6" : {"warning": 70, "immediate": 90},
-        "Temperature 7" : {"warning": 70, "immediate": 90},
-        "Flowlate chemical" : {"warning": 130, "immediate": 100},
-        "Pr.Suction chemical": {"warning": 250, "immediate": 200},
-        "Pr.Dischange chemical": {"warning": 250, "immediate": 200}
-        }
+    "Temperature 1" : {"warning": 70, "immediate": 90},
+    "Temperature 2" : {"warning": 70, "immediate": 90},
+    "Temperature 3" : {"warning": 70, "immediate": 90},
+    "Temperature 4" : {"warning": 70, "immediate": 90},
+    "Temperature 5" : {"warning": 70, "immediate": 90},
+    "Temperature 6" : {"warning": 70, "immediate": 90},
+    "Temperature 7" : {"warning": 70, "immediate": 90},
+    "Flowlate chemical" : {"warning": 130, "immediate": 100},
+    "Pr.Suction chemical": {"warning": 250, "immediate": 200},
+    "Pr.Dischange chemical": {"warning": 250, "immediate": 200}
+    }
            
 available_sensors = [s for s in sensor_thresholds if s in df.columns]
 if not available_sensors:

@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 st.set_page_config(page_title="Dashboard monitor anodizing", layout="wide")
 
 
-    #read file excel        
+        
 df = pd.read_excel("HistoryData.xlsx")
 df.columns = df.columns.str.strip()
 df["TIMESTAMP"] = pd.to_datetime(df["TIMESTAMP"], errors='coerce', infer_datetime_format = True)
@@ -54,7 +54,7 @@ if not available_sensors:
     print("Warning =", warning)    
     print("Immediate =", immediate)
     
-    #chart
+
 fig = go.Figure()
 fig.add_trace(go.Scatter(
     x = sensor_data["TIMESTAMP"],

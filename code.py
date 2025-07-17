@@ -7,8 +7,6 @@ import plotly.graph_objects as go
 st.set_page_config(page_title="Dashboard monitor anodizing", layout="wide")
 
 
-#upload_file = st.file_uploader ("Upload file excel" , type=["xlsx"])
-#if  upload_file:
     #read file excel        
     df = pd.read_excel("HistoryData.xlsx")
     df.columns = df.columns.str.strip()

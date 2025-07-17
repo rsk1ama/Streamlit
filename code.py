@@ -49,10 +49,10 @@ else:
         if sensor_data.empty:
             st.warning("no data for date")
             st.stop()
-    warning = sensor_thresholds[sensor]["warning"]
-    immediate = sensor_thresholds[sensor]["immediate"]
-    print("Warning =", warning)    
-    print("Immediate =", immediate)
+warning = sensor_thresholds[sensor]["warning"]
+immediate = sensor_thresholds[sensor]["immediate"]
+print("Warning =", warning)    
+print("Immediate =", immediate)
     
 
 fig = go.Figure()

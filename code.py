@@ -46,9 +46,9 @@ else:
         mask = (df["TIMESTAMP"].dt.date >= start_date) & (df["TIMESTAMP"].dt.date <= end_date)
         sensor_data = df.loc[mask,["TIMESTAMP",sensor]].dropna()
 
-    if sensor_data.empty:
-        st.warning("no data for date")
-        st.stop()
+        if sensor_data.empty:
+            st.warning("no data for date")
+            st.stop()
 warning = sensor_thresholds[sensor]["warning"]
 immediate = sensor_thresholds[sensor]["immediate"]
 print("Warning =", warning)    

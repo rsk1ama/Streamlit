@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 
 USER_CREDENTIALS = {
        "admin":"TEF4",
-       "user": "TEF4"
+       "user": "pass"
 }
 def login():
        st.title("Login Page")

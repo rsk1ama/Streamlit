@@ -87,9 +87,9 @@ if not available_sensors:
         legend_title ="ข้อมูล",
         )
     
-    st.plotly_chart(fig,use_container_width=True)
-    with st.expander("ดูข้อมูล"):
-        st.dataframe(sensor_data,use_container_width=True)
+st.plotly_chart(fig,use_container_width=True)
+with st.expander("ดูข้อมูล"):
+    st.dataframe(sensor_data,use_container_width=True)
 
 
 

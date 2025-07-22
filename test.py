@@ -151,7 +151,7 @@ else:
             <!-- Pressure sensors -->
             <div class="sensor" style="top:{positions['Pr.Suction'][1]}px; left:{positions['Pr.Suction'][0]}px">
                 <img src="data:image/png;base64,{image_to_base64(pressure_icon)}" width="32"/><br>
-                <span>{pr_suction:.1f} bar</span>
+                <span>{pr_suction:.1f} kPa</span>
             </div>
             <div class="sensor" style="top:{positions['Pr.Dischange'][1]}px; left:{positions['Pr.Dischange'][0]}px">
                 <img src="data:image/png;base64,{image_to_base64(pressure_icon)}" width="32"/><br>

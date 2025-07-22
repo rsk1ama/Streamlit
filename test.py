@@ -155,7 +155,7 @@ else:
             </div>
             <div class="sensor" style="top:{positions['Pr.Dischange'][1]}px; left:{positions['Pr.Dischange'][0]}px">
                 <img src="data:image/png;base64,{image_to_base64(pressure_icon)}" width="32"/><br>
-                <span style="color:{'red' if pr_discharge < 300 else 'black'}">{pr_discharge:.1f} bar</span>
+                <span style="color:{'red' if pr_discharge < 300 else 'black'}">{pr_discharge:.1f} kPa</span>
                 </div>
             </div>
         """, unsafe_allow_html=True)

@@ -5,6 +5,8 @@ import base64
 from io import BytesIO
 import numpy as np
 import plotly.graph_objects as go
+import glob
+import os
 
 USER_CREDENTIALS = {
        "admin":"TEF4",
@@ -41,14 +43,36 @@ else:
 
 
 
-        # Load CSV data
-    df = pd.read_csv("History.csv", parse_dates=["TIMESTAMP"],dayfirst= True)
-    df = df.dropna(subset=required_columns)    
-    df.columns = df.columns.str.strip()
+    
+  # path ของโฟลเดอร์
+folder_path = r"L:\MG\TEF\TEF4\00_Common_TEF4\00_Meeting record\09_Digitalization\01_Korawit\data_logs\"
+
+# หาไฟล์ Excel ทั้งหมดในโฟลเดอร์
+all_files = glob.glob(os.path.join(folder_path, "*.xlsx"))
+
+# อ่านและรวมไฟล์
+df_list = []
+for file in all_files:
+    try:
+        temp_df = pd.read_excel(file, parse_dates=["TIMESTAMP"], dayfirst=True)
+        temp_df.columns = temp_df.columns.str.strip() # ลบช่องว่างชื่อคอลัมน์
+        df_list.append(temp_df)
+    except Exception as e:
+        print(f"อ่านไฟล์ {file} ไม่ได้: {e}")
+
+# รวมทั้งหมดเป็น DataFrame เดียว
+if df_list:
+    df = pd.concat(df_list, ignore_index=True)
+    
+    # จัดการข้อมูลเพิ่มเติม
+    df = df.dropna(subset=required_columns)
     df["TIMESTAMP"] = pd.to_datetime(df["TIMESTAMP"], errors="coerce")
     df = df.sort_values("TIMESTAMP")
     latest = df.iloc[-1]
-    df.replace([0,65505,65535],np.nan, inplace = True)
+    df.replace([0, 65535, 65535.0], np.nan, inplace=True)
+else:
+    df = pd.DataFrame() # ถ้าไม่มีไฟล์
+
 
             # Load layout image
     bg_image = Image.open("scada_layout_real.png")
